@@ -136,21 +136,20 @@ video{width:100%;border-radius:14px;display:block;max-height:52vh;background:#1f
 <section class="scene" id="s0">
   <div class="doors"><div></div><div></div></div>
   <div class="kicker">The Secret Garden</div>
-  <h1 class="big glow">MUSEUM OF US</h1>
-  <div class="script">ORBNELIA</div>
+  <h1 class="big glow">ORNELIA</h1>
   <div class="sub">A Little Universe Made of Us</div>
-  <div class="serif" style="letter-spacing:.2em">18 November 2024 — 18 November 2026</div>
+  <div class="serif" style="letter-spacing:.2em">18 November 2024</div>
   <div class="kicker">2nd Anniversary</div>
   <p class="sub">Di balik gerbang ini, ada taman kecil yang menyimpan kita. Masukkan enam angka yang paling kita kenal.</p>
   <input id="pin" type="password" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="······" aria-label="PIN">
   <div class="line" id="pinMsg"></div>
-  <button class="btn" id="enter">Enter the Museum</button>
+  <button class="btn" id="enter">Enter</button>
 </section>
 
 <!-- SCENE 2 -->
 <section class="scene" id="s1">
   <div class="kicker">Scene II</div>
-  <h2 class="big">A LITTLE FILM OF US</h2>
+  <h2 class="big">A LITTLE PART OFUS</h2>
   <div class="glass vframe">
     <!-- EDIT: ganti video di assets/video/anniversary.mp4 -->
     <video id="vid" controls playsinline preload="metadata" src="assets/video/anniversary.mp4"></video>
@@ -237,23 +236,23 @@ video{width:100%;border-radius:14px;display:block;max-height:52vh;background:#1f
 const CFG={
   pin:"181124",
   start:"2024-11-18", end:"2026-11-18",
-  videoCaption:"Dua tahun, dirangkai jadi beberapa menit. Semoga kamu tersenyum.",
-  afterVideo:"Terima kasih sudah menontonnya sampai akhir.",
-  quizEnd:"Apa pun hasilnya, kamu tetap yang paling tahu tentang kita.",
+  videoCaption:"selamat menyaksikan sayangg!",
+  afterVideo:"terima kasih sudah menontonnya sampai akhir.",
+  quizEnd:"apa pun hasilnya, kamu tetap yang paling tahu tentang kita.",
   // EDIT: ganti pertanyaan, pilihan, dan indeks jawaban benar (a: 0 = pilihan pertama)
   quiz:[
-    {q:"[Pertanyaan 1 — contoh: Di mana pertama kali kita bertemu?]",o:["[Pilihan A]","[Pilihan B]","[Pilihan C]"],a:0},
-    {q:"[Pertanyaan 2 — contoh: Apa makanan favorit kita berdua?]",o:["[Pilihan A]","[Pilihan B]","[Pilihan C]"],a:0},
-    {q:"[Pertanyaan 3 — contoh: Lagu apa yang paling mengingatkan pada kita?]",o:["[Pilihan A]","[Pilihan B]","[Pilihan C]"],a:0}
+    {q:"[Pertanyaan 1 — contoh: apa nama konsep hubungan kita?]",o:["[Orbnelia]","[Museum of Love]","[Our Little Universe]"],a:0},
+    {q:"[Pertanyaan 2 — contoh: hal apa yang paling aku suka dari kita?]",o:["[menghabiskan banyak waktu]","[makan di tempat fancy]","[di kasih hadiah mahal]"],a:0},
+    {q:"[Pertanyaan 3 — contoh: apa jajanan yang paling sering nanas beli?]",o:["[sempol dan matcha]","[pecel lele]","[dimsum]"],a:0}
   ],
   // EDIT: 6 momen timeline (tanggal, judul, deskripsi)
   timeline:[
-    {d:"[Tanggal 1]",t:"[Judul momen 1]",x:"[Ceritakan momen ini dengan kata-katamu sendiri.]"},
-    {d:"[Tanggal 2]",t:"[Judul momen 2]",x:"[Ceritakan momen ini dengan kata-katamu sendiri.]"},
-    {d:"[Tanggal 3]",t:"[Judul momen 3]",x:"[Ceritakan momen ini dengan kata-katamu sendiri.]"},
-    {d:"[Tanggal 4]",t:"[Judul momen 4]",x:"[Ceritakan momen ini dengan kata-katamu sendiri.]"},
-    {d:"[Tanggal 5]",t:"[Judul momen 5]",x:"[Ceritakan momen ini dengan kata-katamu sendiri.]"},
-    {d:"[Tanggal 6]",t:"[Judul momen 6]",x:"[Ceritakan momen ini dengan kata-katamu sendiri.]"}
+    {d:"[18 November 2024]",t:"[Where It All Began]",x:"[semua bermula dari ketidak sengajaan, awalnya kita hanya dua orang yang belum tau bakalan sejauh apa cerita ini berjalan, sampai akhirnya kita mulai saling mengenal.]"},
+    {d:"[8 Desember 2024]",t:"[The First Encounter]",x:"[hari ketika perkenalan akhirnya berubah menjadi pertemuan nyata, sebuah awal kecil yang kemudian menjadi salah satu tanggal berharga dalam perjalanan ini.]"},
+    {d:"[10 Agustus 2025]",t:"[A New Adventure]",x:"[Gunung Manglayang menjadi saksi dimulainya petualangan dari kisah orbnelia, dari perjalanan ini semakin banyak cerita yang tercipta di antara langkah dan pemandangan.]"},
+    {d:"[30 November 2025]",t:"[1st Anniversary]",x:"[Satu tahun perjalanan orbnelia dirayakan di Gunung Papandayan, sebuah perayaan sederhana dengan cara yang begitu berkesan. ditemani perjalanan menuju puncak dan kenangan yang terus bertambah.]"},
+    {d:"[17 Mei 2026]",t:"[Another Memory to Keep]",x:"[Gunung Artapela kembali menjadi bagian dari cerita ornelia, satu perjalanan lagi, satu puncak lagi, dan satu kenangan baru yng tersimpan dalam perjalanan panjang ini.]"},
+    {d:"[1 Agustus 2026]",t:"[A Day to Remember]",x:"[girlfriend day dirayakan dengan perjalanan menuju Gunung Malabar, bukan sekedar tentang mencapai puncak tetapi tentang setiap langkah dan momen yang membuat hari itu menjadi terasa istimewa.]"}
   ],
   timelineEnd:"Dan perjalanannya belum selesai.",
   // EDIT: caption foto (file: assets/images/photo-01.jpg … photo-05.jpg)
