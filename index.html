@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MUSEUM OF US — ORBNELIA</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Great+Vibes&family=Lora:ital@0;1&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--rose:#D9A7B0;--lav:#C8B8E8;--blue:#B9D4E8;--cream:#FFF3DF;--pearl:#FFFDF8;--sage:#C5D5BC;--mauve:#B58AA8;
+--ink:#FFFDF8;--glass:rgba(255,253,248,.14);--edge:rgba(255,253,248,.38)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{font-family:Lora,Georgia,serif;color:var(--ink);background:linear-gradient(165deg,#2f2748,#5b4575 45%,#9b6f93 78%,#d9a7b0);padding-top:env(safe-area-inset-top)}
+h1,h2,h3{font-family:"Playfair Display",Georgia,serif;font-weight:500;letter-spacing:.04em}
+.script{font-family:"Great Vibes",cursive;color:var(--rose);font-size:clamp(2rem,6vw,3.2rem)}
+.serif{font-family:"Cormorant Garamond",Georgia,serif}
+.glass{background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--edge);border-radius:22px;box-shadow:0 0 28px rgba(200,184,232,.25),0 10px 30px rgba(0,0,0,.18)}
+.scene{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:64px 18px 96px;overflow-y:auto;opacity:0;visibility:hidden;transform:translateY(18px) scale(.985);transition:opacity .9s ease,transform .9s ease,visibility 0s .9s;z-index:2}
+.scene.on{opacity:1;visibility:visible;transform:none;transition:opacity .9s ease,transform .9s ease}
+.scene>*{max-width:min(920px,100%)}
+.kicker{font-family:"Cormorant Garamond",serif;letter-spacing:.35em;text-transform:uppercase;font-size:.85rem;color:var(--blue)}
+.big{font-size:clamp(1.8rem,6vw,3.4rem);line-height:1.15}
+.sub{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(1.05rem,3.2vw,1.4rem);color:var(--cream);max-width:560px}
+.btn{font-family:"Cormorant Garamond",serif;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#3b2f52;background:linear-gradient(135deg,var(--cream),var(--rose));border:0;border-radius:999px;padding:14px 28px;min-height:48px;cursor:pointer;font-size:1rem;box-shadow:0 0 22px rgba(217,167,176,.55);transition:transform .25s,box-shadow .25s}
+.btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 0 32px rgba(255,243,223,.7)}
+.btn:active{transform:scale(.97)}
+.btn[hidden]{display:none}
+.line{min-height:1.6em;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:1.25rem;color:var(--cream);opacity:0;transition:opacity 1s}
+.line.show{opacity:1}
+/* decor */
+#decor{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:1}
+.star{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--pearl);box-shadow:0 0 8px 2px rgba(255,253,248,.8);animation:tw 3s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.15;transform:scale(.7)}50%{opacity:1;transform:scale(1.2)}}
+.petal{position:absolute;top:-30px;font-size:16px;opacity:.7;animation:fall linear infinite}
+@keyframes fall{to{transform:translate(60px,110vh) rotate(360deg)}}
+.bfly{position:absolute;font-size:22px;opacity:.8;animation:fly ease-in-out infinite alternate}
+@keyframes fly{0%{transform:translate(0,0) rotate(-10deg)}50%{transform:translate(40px,-30px) rotate(12deg)}100%{transform:translate(-20px,20px) rotate(-6deg)}}
+.moon{position:fixed;top:56px;right:7vw;width:54px;height:54px;border-radius:50%;box-shadow:inset -14px 6px 0 0 var(--cream);filter:drop-shadow(0 0 14px rgba(255,243,223,.8));opacity:.85;z-index:1;pointer-events:none}
+.lights{position:fixed;top:0;left:0;right:0;height:46px;z-index:1;pointer-events:none;display:flex;justify-content:space-around;align-items:flex-start;border-top:2px solid rgba(255,253,248,.2)}
+.lights i{width:9px;height:9px;margin-top:10px;border-radius:50%;background:var(--cream);box-shadow:0 0 14px 4px rgba(255,243,223,.7);animation:tw 2.6s ease-in-out infinite}
+.rays{position:fixed;inset:0;z-index:1;pointer-events:none;background:conic-gradient(from 200deg at 85% -10%,transparent,rgba(255,243,223,.09),transparent 22%)}
+.cloud{position:fixed;bottom:60px;width:220px;height:60px;border-radius:60px;background:rgba(255,253,248,.07);filter:blur(10px);z-index:1;pointer-events:none;animation:drift 40s linear infinite alternate}
+@keyframes drift{to{transform:translateX(60vw)}}
+/* controls */
+#top{position:fixed;top:calc(8px + env(safe-area-inset-top));left:10px;right:10px;display:flex;justify-content:flex-end;align-items:center;gap:8px;z-index:20}
+.ic{width:44px;height:44px;border-radius:50%;border:1px solid var(--edge);background:var(--glass);backdrop-filter:blur(10px);color:var(--pearl);font-size:1.1rem;cursor:pointer}
+.ic.off{opacity:.45}
+#vol{width:80px;accent-color:var(--rose)}
+#nav{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom));left:0;right:0;display:flex;justify-content:center;align-items:center;gap:12px;z-index:20}
+#nav .btn{padding:10px 20px;min-height:44px;font-size:.85rem}
+#nav .btn:disabled{opacity:.35;pointer-events:none}
+#dots{display:flex;gap:7px}
+#dots i{width:8px;height:8px;border-radius:50%;background:rgba(255,253,248,.3);transition:.4s}
+#dots i.on{background:var(--rose);box-shadow:0 0 10px var(--rose);transform:scale(1.4)}
+/* scene 1 */
+.doors{position:absolute;inset:0;z-index:-1;display:flex}
+.doors div{flex:1;background:linear-gradient(135deg,rgba(185,212,232,.18),rgba(217,167,176,.25));border:1px solid var(--edge);transition:transform 1.6s cubic-bezier(.7,0,.3,1)}
+#s0.open .doors div:first-child{transform:translateX(-102%)}
+#s0.open .doors div:last-child{transform:translateX(102%)}
+#pin{font-family:"Cormorant Garamond",serif;font-size:1.8rem;letter-spacing:.7em;text-indent:.7em;text-align:center;width:min(280px,80vw);padding:10px;color:var(--pearl);background:var(--glass);border:1px solid var(--edge);border-radius:16px;outline:0}
+#pin:focus{box-shadow:0 0 22px var(--lav)}
+.shake{animation:sh .5s}
+@keyframes sh{20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
+/* video */
+.vframe{padding:10px;width:min(780px,100%)}
+video{width:100%;border-radius:14px;display:block;max-height:52vh;background:#1f1830}
+/* quiz */
+.card{padding:22px;width:min(600px,100%)}
+.opt{display:block;width:100%;margin-top:10px;padding:13px;min-height:48px;border-radius:14px;border:1px solid var(--edge);background:rgba(255,253,248,.1);color:var(--pearl);font:inherit;cursor:pointer;transition:.3s}
+.opt:hover{background:rgba(200,184,232,.3)}
+.opt.pick{background:rgba(217,167,176,.55);transform:scale(1.02);box-shadow:0 0 18px var(--rose)}
+.bar{height:5px;border-radius:5px;background:rgba(255,253,248,.2);overflow:hidden;margin-bottom:12px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--lav),var(--rose));transition:width .6s}
+/* timeline */
+.tl{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;width:min(900px,100%);position:relative}
+.tc{padding:16px;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.tc small{color:var(--blue);letter-spacing:.2em;font-family:"Cormorant Garamond",serif}
+.tc h3{margin:4px 0;font-size:1.15rem}
+.tc p{max-height:0;overflow:hidden;opacity:0;transition:max-height .7s,opacity .7s;font-size:.95rem;line-height:1.55}
+.tc.open p{max-height:200px;opacity:1;margin-top:6px}
+.tc .orn{float:right;transition:transform .6s}.tc.open .orn{transform:rotate(180deg) scale(1.2)}
+/* gallery */
+.gal{display:flex;flex-wrap:wrap;justify-content:center;gap:18px;width:min(980px,100%)}
+.pol{width:min(170px,42vw);background:var(--pearl);padding:9px 9px 12px;border-radius:4px;color:#4a3a56;cursor:pointer;border:0;font:inherit;box-shadow:0 8px 22px rgba(0,0,0,.35);transform:rotate(var(--r));transition:transform .4s;animation:flt 5s ease-in-out infinite alternate}
+.pol:hover{transform:rotate(0) scale(1.07) translateY(-4px)}
+@keyframes flt{to{margin-top:-8px}}
+.ph{aspect-ratio:1;width:100%;overflow:hidden;background:linear-gradient(135deg,var(--lav),var(--rose));display:flex;align-items:center;justify-content:center;font-size:2rem}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.pol span{display:block;margin-top:8px;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:1rem}
+#lb{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;background:rgba(30,22,48,.88);padding:20px}
+#lb.on{display:flex;animation:fin .5s}
+@keyframes fin{from{opacity:0;transform:scale(.94)}}
+#lb .ph{width:min(560px,90vw);max-height:70vh;aspect-ratio:auto;height:min(70vh,560px);background:#2c2342;border-radius:6px}
+#lb img{object-fit:contain}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;width:min(800px,100%)}
+.stat{padding:20px 12px}
+.stat b{display:block;font-family:"Playfair Display",serif;font-size:clamp(2rem,7vw,3rem);color:var(--cream);text-shadow:0 0 18px var(--rose)}
+.stat span{font-family:"Cormorant Garamond",serif;letter-spacing:.12em;font-size:1rem;color:var(--blue)}
+/* little */
+.lg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;width:min(860px,100%)}
+.fl{perspective:800px;height:150px;cursor:pointer;background:none;border:0;font:inherit;color:inherit}
+.fl>div{position:relative;width:100%;height:100%;transition:transform .8s;transform-style:preserve-3d}
+.fl.on>div{transform:rotateY(180deg)}
+.fl .f,.fl .b{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;align-items:center;justify-content:center;padding:14px;font-size:.95rem;line-height:1.5}
+.fl .b{transform:rotateY(180deg);background:rgba(217,167,176,.28)}
+.fl .f{font-family:"Cormorant Garamond",serif;font-size:1.25rem;letter-spacing:.06em}
+/* letter */
+#env{width:min(300px,80vw);height:190px;position:relative;border:0;cursor:pointer;background:linear-gradient(160deg,var(--cream),var(--rose));border-radius:6px;box-shadow:0 14px 32px rgba(0,0,0,.35);color:#4a3a56;font:inherit;transition:.6s}
+#env .flap{position:absolute;top:0;left:0;right:0;height:50%;background:var(--rose);clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .8s;z-index:3}
+#env .seal{position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);font-size:1.7rem;z-index:4;transition:.4s}
+#env.open{opacity:0;height:0;pointer-events:none;margin:-12px}
+#env.open .flap{transform:rotateX(180deg)}
+#env.open .seal{opacity:0}
+#letter{display:none;width:min(560px,100%);max-height:52vh;overflow-y:auto;padding:26px 24px;text-align:left;background:var(--pearl);color:#4a3a56;border-radius:8px;box-shadow:0 14px 34px rgba(0,0,0,.35);line-height:1.85;font-size:1.02rem;white-space:pre-line}
+#letter.on{display:block;animation:rise 1.6s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(40px)}}
+.glow{animation:gl 4s ease-in-out infinite alternate}
+@keyframes gl{from{text-shadow:0 0 12px rgba(217,167,176,.5)}to{text-shadow:0 0 34px rgba(200,184,232,.95)}}
+@media(max-width:600px){#vol{width:56px}.moon{width:38px;height:38px;box-shadow:inset -10px 4px 0 0 var(--cream)}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+<div class="rays"></div><div class="moon"></div><div class="cloud" style="left:-10%"></div>
+<div class="lights" id="lights"></div><div id="decor"></div>
+
+<div id="top">
+  <input id="vol" type="range" min="0" max="100" value="35" aria-label="Volume musik">
+  <button class="ic" id="bMusic" title="Musik" aria-label="Musik">🎵</button>
+  <button class="ic" id="bSfx" title="Efek suara" aria-label="Efek suara">✨</button>
+</div>
+
+<!-- SCENE 1 -->
+<section class="scene" id="s0">
+  <div class="doors"><div></div><div></div></div>
+  <div class="kicker">The Secret Garden</div>
+  <h1 class="big glow">MUSEUM OF US</h1>
+  <div class="script">ORBNELIA</div>
+  <div class="sub">A Little Universe Made of Us</div>
+  <div class="serif" style="letter-spacing:.2em">18 November 2024 — 18 November 2026</div>
+  <div class="kicker">2nd Anniversary</div>
+  <p class="sub">Di balik gerbang ini, ada taman kecil yang menyimpan kita. Masukkan enam angka yang paling kita kenal.</p>
+  <input id="pin" type="password" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="······" aria-label="PIN">
+  <div class="line" id="pinMsg"></div>
+  <button class="btn" id="enter">Enter the Museum</button>
+</section>
+
+<!-- SCENE 2 -->
+<section class="scene" id="s1">
+  <div class="kicker">Scene II</div>
+  <h2 class="big">A LITTLE FILM OF US</h2>
+  <div class="glass vframe">
+    <!-- EDIT: ganti video di assets/video/anniversary.mp4 -->
+    <video id="vid" controls playsinline preload="metadata" src="assets/video/anniversary.mp4"></video>
+  </div>
+  <p class="sub" id="vcap"></p>
+  <div class="line" id="vend"></div>
+  <button class="btn" id="vnext">Lanjut</button>
+</section>
+
+<!-- SCENE 3 -->
+<section class="scene" id="s2">
+  <div class="kicker">Scene III</div>
+  <h2 class="big">HOW WELL DO YOU KNOW US?</h2>
+  <div class="glass card" id="quiz"></div>
+</section>
+
+<!-- SCENE 4 -->
+<section class="scene" id="s3">
+  <div class="kicker">Scene IV</div>
+  <h2 class="big">OUR LITTLE TIMELINE</h2>
+  <p class="sub">Buka satu per satu, pelan-pelan saja.</p>
+  <div class="tl" id="tl"></div>
+  <div class="line" id="tlEnd"></div>
+</section>
+
+<!-- SCENE 5 -->
+<section class="scene" id="s4">
+  <div class="kicker">Scene V</div>
+  <h2 class="big">THE GALLERY OF US</h2>
+  <div class="gal" id="gal"></div>
+  <button class="btn" data-next>Next Gallery</button>
+</section>
+
+<!-- SCENE 6 -->
+<section class="scene" id="s5">
+  <div class="kicker">Scene VI</div>
+  <h2 class="big">LITTLE THINGS, BIG MEANING</h2>
+  <div class="stats" id="stats"></div>
+  <p class="sub">Angka-angka kecil yang diam-diam menyimpan banyak rasa.</p>
+</section>
+
+<!-- SCENE 7 -->
+<section class="scene" id="s6">
+  <div class="kicker">Scene VII</div>
+  <h2 class="big">THE LITTLE THINGS</h2>
+  <p class="sub">Ketuk kartunya, lihat apa yang tersimpan di baliknya.</p>
+  <div class="lg" id="lg"></div>
+  <div class="line" id="lgEnd"></div>
+</section>
+
+<!-- SCENE 8 -->
+<section class="scene" id="s7">
+  <div class="kicker">Scene VIII</div>
+  <h2 class="big">A LETTER FOR YOU</h2>
+  <button id="env" aria-label="Buka surat"><span class="flap"></span><span class="seal">🌸</span></button>
+  <div class="glass" id="letterWrap" style="display:none;padding:10px;border-radius:14px"><div id="letter"></div></div>
+  <button class="btn" id="lnext" hidden data-next>Continue</button>
+</section>
+
+<!-- SCENE 9 -->
+<section class="scene" id="s8">
+  <div class="kicker">Scene IX</div>
+  <h2 class="big glow">UNTIL OUR NEXT CHAPTER</h2>
+  <div class="script" style="font-size:clamp(2.6rem,9vw,4.5rem)">ORBNELIA</div>
+  <div class="serif" style="letter-spacing:.3em">MUSEUM OF US · 2nd Anniversary</div>
+  <div class="serif" style="letter-spacing:.2em">18 November 2024 — 18 November 2026</div>
+  <p class="sub" id="finale"></p>
+  <button class="btn" id="revisit">Revisit Our Memories</button>
+</section>
+
+<div id="nav">
+  <button class="btn" id="back">Back</button>
+  <div id="dots"></div>
+  <button class="btn" id="next">Next</button>
+</div>
+
+<div id="lb"><div class="ph" id="lbph"></div><span class="serif" id="lbcap" style="font-size:1.2rem;font-style:italic"></span><button class="btn" id="lbx">Tutup</button></div>
+<audio id="bgm" src="assets/audio/background-music.mp3" loop preload="none"></audio>
+
+<script>
+/* =====================================================
+   ✎ EDIT DI SINI — semua teks & placeholder ada di CFG
+   ===================================================== */
+const CFG={
+  pin:"181124",
+  start:"2024-11-18", end:"2026-11-18",
+  videoCaption:"Dua tahun, dirangkai jadi beberapa menit. Semoga kamu tersenyum.",
+  afterVideo:"Terima kasih sudah menontonnya sampai akhir.",
+  quizEnd:"Apa pun hasilnya, kamu tetap yang paling tahu tentang kita.",
+  // EDIT: ganti pertanyaan, pilihan, dan indeks jawaban benar (a: 0 = pilihan pertama)
+  quiz:[
+    {q:"[Pertanyaan 1 — contoh: Di mana pertama kali kita bertemu?]",o:["[Pilihan A]","[Pilihan B]","[Pilihan C]"],a:0},
+    {q:"[Pertanyaan 2 — contoh: Apa makanan favorit kita berdua?]",o:["[Pilihan A]","[Pilihan B]","[Pilihan C]"],a:0},
+    {q:"[Pertanyaan 3 — contoh: Lagu apa yang paling mengingatkan pada kita?]",o:["[Pilihan A]","[Pilihan B]","[Pilihan C]"],a:0}
+  ],
+  // EDIT: 6 momen timeline (tanggal, judul, deskripsi)
+  timeline:[
+    {d:"[Tanggal 1]",t:"[Judul momen 1]",x:"[Ceritakan momen ini dengan kata-katamu sendiri.]"},
+    {d:"[Tanggal 2]",t:"[Judul momen 2]",x:"[Ceritakan momen ini dengan kata-katamu sendiri.]"},
+    {d:"[Tanggal 3]",t:"[Judul momen 3]",x:"[Ceritakan momen ini dengan kata-katamu sendiri.]"},
+    {d:"[Tanggal 4]",t:"[Judul momen 4]",x:"[Ceritakan momen ini dengan kata-katamu sendiri.]"},
+    {d:"[Tanggal 5]",t:"[Judul momen 5]",x:"[Ceritakan momen ini dengan kata-katamu sendiri.]"},
+    {d:"[Tanggal 6]",t:"[Judul momen 6]",x:"[Ceritakan momen ini dengan kata-katamu sendiri.]"}
+  ],
+  timelineEnd:"Dan perjalanannya belum selesai.",
+  // EDIT: caption foto (file: assets/images/photo-01.jpg … photo-05.jpg)
+  photos:["[Caption foto 1]","[Caption foto 2]","[Caption foto 3]","[Caption foto 4]","[Caption foto 5]"],
+  // EDIT: v = angka. Hari bersama dihitung otomatis dari start–end. Sisanya placeholder.
+  stats:[
+    {l:"Hari bersama",v:"auto"},
+    {l:"Kenangan",v:0},      // EDIT
+    {l:"Foto",v:5},          // EDIT
+    {l:"Momen spesial",v:0}  // EDIT
+  ],
+  // EDIT: 6 kartu kecil (judul depan, isi belakang)
+  little:[
+    {h:"Little things I remember",t:"[Isi kartu 1]"},
+    {h:"Things that make us special",t:"[Isi kartu 2]"},
+    {h:"Our favorite moments",t:"[Isi kartu 3]"},
+    {h:"Small reasons to be grateful",t:"[Isi kartu 4]"},
+    {h:"Things I never want to forget",t:"[Isi kartu 5]"},
+    {h:"A little wish for us",t:"[Isi kartu 6]"}
+  ],
+  littleEnd:"Hal-hal kecil, tapi selalu terasa besar.",
+  // EDIT: isi surat (baris baru = paragraf)
+  letter:"Untuk kamu,\n\n[Tulis suratmu di sini. Ceritakan apa yang ingin kamu sampaikan setelah dua tahun ini.]\n\n[Paragraf kedua — harapan, terima kasih, atau hal yang selama ini belum sempat terucap.]\n\nDengan sepenuh hati,\n[Namamu]",
+  finale:"Dua tahun adalah satu bab. Masih banyak halaman kosong yang menunggu kita isi."
+};
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const scenes=$$(".scene"),N=scenes.length;
+let cur=0,unlocked=false,at=null;const done={};
+
+/* ---------- audio (Web Audio API) ---------- */
+let ac=null,master=null,sfxOn=true,last=0;
+function initAudio(){
+  if(ac){if(ac.state==="suspended")ac.resume().catch(()=>{});return}
+  try{ac=new(window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.gain.value=.11;master.connect(ac.destination)}catch(e){ac=null}
+}
+function tone(f,t0,d,type,v){
+  if(!ac||!sfxOn)return;
+  try{const o=ac.createOscillator(),g=ac.createGain(),s=ac.currentTime+t0;
+  o.type=type||"sine";o.frequency.value=f;
+  g.gain.setValueAtTime(0,s);g.gain.linearRampToValueAtTime(v||.4,s+.02);g.gain.exponentialRampToValueAtTime(.0001,s+d);
+  o.connect(g);g.connect(master);o.start(s);o.stop(s+d+.05)}catch(e){}
+}
+function noise(d,f0,f1,v){
+  if(!ac||!sfxOn)return;
+  try{const n=ac.sampleRate*d,b=ac.createBuffer(1,n,ac.sampleRate),a=b.getChannelData(0);
+  for(let i=0;i<n;i++)a[i]=Math.random()*2-1;
+  const s=ac.createBufferSource(),fl=ac.createBiquadFilter(),g=ac.createGain(),t=ac.currentTime;
+  s.buffer=b;fl.type="bandpass";fl.frequency.setValueAtTime(f0,t);fl.frequency.exponentialRampToValueAtTime(f1,t+d);
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+d*.3);g.gain.linearRampToValueAtTime(0,t+d);
+  s.connect(fl);fl.connect(g);g.connect(master);s.start()}catch(e){}
+}
+const S={
+  click:()=>tone(880,0,.12,"triangle",.3),
+  chime:()=>[784,988,1175,1568].forEach((f,i)=>tone(f,i*.13,1.3,"sine",.35)),
+  whoosh:()=>noise(.7,300,1800,.5),
+  sparkle:()=>[2093,2637,3136].forEach((f,i)=>tone(f,i*.07,.35,"sine",.16)),
+  pop:()=>{tone(520,0,.09,"sine",.45);tone(780,.04,.08,"sine",.2)},
+  paper:()=>noise(.4,2500,5000,.5),
+  end:()=>[523,659,784,988,1319].forEach((f,i)=>tone(f,i*.35,2.4,"sine",.3))
+};
+function sfx(n){
+  const t=Date.now();if(t-last<140&&n!=="chime"&&n!=="end")return;last=t;
+  initAudio();try{S[n]()}catch(e){}
+}
+
+/* ---------- music ---------- */
+const bgm=$("#bgm");let musicOn=true;bgm.volume=.35;
+function startMusic(){if(!musicOn||!bgm.paused)return;const p=bgm.play();if(p&&p.catch)p.catch(()=>{})}
+$("#vol").oninput=e=>{bgm.volume=e.target.value/100};
+$("#bMusic").onclick=()=>{
+  musicOn=!musicOn;$("#bMusic").classList.toggle("off",!musicOn);
+  if(musicOn)startMusic();else bgm.pause();
+};
+$("#bSfx").onclick=()=>{sfxOn=!sfxOn;$("#bSfx").classList.toggle("off",!sfxOn);if(sfxOn)sfx("click")};
+
+/* ---------- navigation ---------- */
+const dots=$("#dots");for(let i=0;i<N;i++)dots.appendChild(document.createElement("i"));
+function auto(from){clearTimeout(at);at=setTimeout(()=>{if(cur===from)go(from+1)},2000)}
+function go(i){
+  if(i<0||i>=N||i===cur&&scenes[cur].classList.contains("on"))return;
+  if(i>0&&!unlocked)return;
+  clearTimeout(at);
+  if(cur===1)$("#vid").pause();
+  const prev=cur;cur=i;
+  scenes.forEach((s,k)=>s.classList.toggle("on",k===i));
+  [...dots.children].forEach((d,k)=>d.classList.toggle("on",k===i));
+  scenes[i].scrollTop=0;
+  $("#back").disabled=i===0;$("#next").disabled=i===N-1||(i===0&&!unlocked);
+  if(prev!==i&&unlocked)sfx("whoosh");
+  if(enter[i])setTimeout(()=>{if(cur===i)enter[i]()},500);
+}
+$("#next").onclick=()=>{sfx("click");go(cur+1)};
+$("#back").onclick=()=>{sfx("click");go(cur-1)};
+$$("[data-next]").forEach(b=>b.addEventListener("click",()=>{sfx("click");go(cur+1)}));
+$("#vnext").onclick=()=>{sfx("click");go(2)};
+$("#revisit").onclick=()=>{sfx("click");go(0)};
+document.addEventListener("pointerdown",()=>{initAudio()},{once:true});
+
+/* ---------- scene 1: PIN ---------- */
+function tryPin(){
+  initAudio();sfx("click");
+  const v=$("#pin").value.trim(),m=$("#pinMsg");
+  if(v===CFG.pin){
+    if(unlocked)return;unlocked=true;
+    m.textContent="Gerbangnya terbuka…";m.classList.add("show");
+    $("#s0").classList.add("open");$("#enter").disabled=true;$("#pin").disabled=true;
+    sfx("chime");startMusic();$("#next").disabled=false;
+    auto(0);
+  }else{
+    m.textContent="Hmm, belum tepat. Coba ingat lagi tanggal itu ya.";m.classList.add("show");
+    const p=$("#pin");p.classList.remove("shake");void p.offsetWidth;p.classList.add("shake");
+    p.value="";
+  }
+}
+$("#enter").onclick=tryPin;
+$("#pin").addEventListener("keydown",e=>{if(e.key==="Enter")tryPin()});
+
+/* ---------- scene 2: video ---------- */
+$("#vcap").textContent=CFG.videoCaption;
+$("#vid").addEventListener("ended",()=>{
+  const l=$("#vend");l.textContent=CFG.afterVideo;l.classList.add("show");sfx("sparkle");
+  if(!done.v){done.v=1;auto(1)}
+});
+$("#vid").addEventListener("play",()=>clearTimeout(at));
+
+/* ---------- scene 3: quiz ---------- */
+let qi=0,score=0;
+function renderQ(){
+  const box=$("#quiz"),q=CFG.quiz[qi];
+  box.innerHTML=`<div class="bar"><i style="width:${qi/CFG.quiz.length*100}%"></i></div>
+  <div class="kicker" style="margin-bottom:8px">Pertanyaan ${qi+1} / ${CFG.quiz.length}</div>
+  <h3 style="font-size:1.25rem;line-height:1.4">${q.q}</h3>`;
+  q.o.forEach((t,k)=>{
+    const b=document.createElement("button");b.className="opt";b.textContent=t;
+    b.onclick=()=>{
+      box.querySelectorAll(".opt").forEach(x=>x.disabled=true);
+      b.classList.add("pick");sfx("pop");if(k===q.a)score++;
+      setTimeout(()=>{qi++;qi<CFG.quiz.length?renderQ():finishQ()},800);
+    };
+    box.appendChild(b);
+  });
+}
+function finishQ(){
+  $("#quiz").innerHTML=`<div class="bar"><i style="width:100%"></i></div>
+  <div class="script">Selesai ✨</div>
+  <h3 style="margin:8px 0">Skormu ${score} / ${CFG.quiz.length}</h3>
+  <p class="sub" style="margin:auto">${CFG.quizEnd}</p>`;
+  sfx("sparkle");if(!done.q){done.q=1;auto(2)}
+}
+function resetQuiz(){qi=0;score=0;renderQ()}
+renderQ();
+
+/* ---------- scene 4: timeline ---------- */
+const tl=$("#tl");let tlOpen=new Set();
+CFG.timeline.forEach((m,i)=>{
+  const c=document.createElement("button");c.className="glass tc";
+  c.innerHTML=`<span class="orn">🌿</span><small>${m.d}</small><h3>${m.t}</h3><p>${m.x}</p>`;
+  c.onclick=()=>{
+    c.classList.toggle("open");sfx("pop");
+    if(c.classList.contains("open"))tlOpen.add(i);
+    if(tlOpen.size===CFG.timeline.length&&!done.t){
+      done.t=1;const l=$("#tlEnd");l.textContent=CFG.timelineEnd;l.classList.add("show");
+      sfx("sparkle");auto(3);
+    }
+  };
+  tl.appendChild(c);
+});
+
+/* ---------- scene 5: gallery ---------- */
+const gal=$("#gal");
+CFG.photos.forEach((cap,i)=>{
+  const n=String(i+1).padStart(2,"0"),b=document.createElement("button");
+  b.className="pol";b.style.setProperty("--r",((i%2?1:-1)*(1+i%3))+"deg");b.style.animationDelay=i*.5+"s";
+  b.innerHTML=`<div class="ph">🌸</div><span>${cap}</span>`;
+  const im=new Image();im.alt=cap;im.src=`assets/images/photo-${n}.jpg`;
+  im.onload=()=>{const p=b.querySelector(".ph");p.textContent="";p.appendChild(im)};
+  b.onclick=()=>{
+    sfx("pop");const p=$("#lbph");p.innerHTML="";
+    const big=new Image();big.alt=cap;big.src=im.src;
+    big.onload=()=>{p.textContent="";p.appendChild(big)};
+    p.textContent="🌸";$("#lbcap").textContent=cap;$("#lb").classList.add("on");
+  };
+  gal.appendChild(b);
+});
+const closeLb=()=>$("#lb").classList.remove("on");
+$("#lbx").onclick=closeLb;$("#lb").onclick=e=>{if(e.target.id==="lb")closeLb()};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeLb()});
+
+/* ---------- scene 6: stats ---------- */
+const days=Math.round((new Date(CFG.end)-new Date(CFG.start))/864e5);
+const st=$("#stats");
+CFG.stats.forEach(s=>{
+  const d=document.createElement("div");d.className="glass stat";
+  d.innerHTML=`<b data-v="${s.v==="auto"?days:s.v}">0</b><span>${s.l}</span>`;st.appendChild(d);
+});
+function countUp(){
+  const els=$$("#stats b");let t0=null;
+  const step=t=>{
+    if(!t0)t0=t;const p=Math.min((t-t0)/1800,1),e=1-Math.pow(1-p,3);
+    els.forEach(b=>b.textContent=Math.round(b.dataset.v*e));
+    if(p<1)requestAnimationFrame(step);
+    else if(!done.s){done.s=1;sfx("sparkle");auto(5)}
+  };
+  requestAnimationFrame(step);
+}
+
+/* ---------- scene 7: little things ---------- */
+const lg=$("#lg");let flipped=new Set();
+CFG.little.forEach((c,i)=>{
+  const f=document.createElement("button");f.className="fl";
+  f.innerHTML=`<div><span class="glass f">${c.h}</span><span class="glass b">${c.t}</span></div>`;
+  f.onclick=()=>{
+    f.classList.toggle("on");sfx("pop");
+    if(f.classList.contains("on"))flipped.add(i);
+    if(flipped.size===CFG.little.length&&!done.l){
+      done.l=1;const l=$("#lgEnd");l.textContent=CFG.littleEnd;l.classList.add("show");auto(6);
+    }
+  };
+  lg.appendChild(f);
+});
+
+/* ---------- scene 8: letter ---------- */
+$("#letter").textContent=CFG.letter;
+$("#env").onclick=()=>{
+  const e=$("#env");if(e.classList.contains("open"))return;
+  sfx("paper");e.classList.add("open");
+  setTimeout(()=>{$("#letterWrap").style.display="block";$("#letter").classList.add("on");$("#lnext").hidden=false},700);
+};
+
+/* ---------- scene 9 ---------- */
+$("#finale").textContent=CFG.finale;
+
+/* ---------- on-enter hooks ---------- */
+const enter={
+  2:()=>{if(!done.q)resetQuiz()},
+  5:()=>{countUp()},
+  8:()=>{sfx("end")}
+};
+enter[1]=()=>{};
+
+/* ---------- decor ---------- */
+(function(){
+  const d=$("#decor"),mob=innerWidth<600,r=Math.random;
+  for(let i=0;i<(mob?22:40);i++){
+    const s=document.createElement("i");s.className="star";
+    s.style.cssText=`left:${r()*100}%;top:${r()*100}%;animation-delay:${r()*3}s;animation-duration:${2+r()*3}s`;d.appendChild(s);
+  }
+  const pet=["🌸","🌷","🪻"];
+  for(let i=0;i<(mob?6:12);i++){
+    const p=document.createElement("span");p.className="petal";p.textContent=pet[i%3];
+    p.style.cssText=`left:${r()*100}%;animation-duration:${14+r()*14}s;animation-delay:${-r()*20}s;font-size:${12+r()*8}px`;d.appendChild(p);
+  }
+  for(let i=0;i<(mob?2:4);i++){
+    const b=document.createElement("span");b.className="bfly";b.textContent="🦋";
+    b.style.cssText=`left:${10+r()*80}%;top:${15+r()*65}%;animation-duration:${6+r()*5}s;animation-delay:${-r()*5}s`;d.appendChild(b);
+  }
+  const L=$("#lights");for(let i=0;i<(mob?12:24);i++){const x=document.createElement("i");x.style.animationDelay=r()*2.6+"s";L.appendChild(x)}
+})();
+
+/* ---------- init ---------- */
+go(0);
+</script>
+</body>
+</html>
